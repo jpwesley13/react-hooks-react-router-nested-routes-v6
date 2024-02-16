@@ -1,27 +1,31 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+// import { useEffect, useState } from "react";
+import { useParams, useOutletContext } from "react-router-dom";
 
 function UserProfile() {
-  const [user, setUser] = useState({});
+  // const [user, setUser] = useState({});
   const params = useParams();
-  const userId = params.id;
+  const users = useOutletContext();
 
-  useEffect(() =>{
-    fetch(`http://localhost:4000/users/${userId}`)
-    .then(r => r.json())
-    .then(data => setUser(data))
-    .catch(error => console.error(error));
-  }, [userId]);
+  const user = users.find(user => user.id === parseInt(params.id))
 
-  if(!user.name){
+  // const userId = params.id;
+
+  // useEffect(() =>{
+  //   fetch(`http://localhost:4000/users/${userId}`)
+  //   .then(r => r.json())
+  //   .then(data => setUser(data))
+  //   .catch(error => console.error(error));
+  // }, [userId]); This still works, but using useOutletContext and .find for demonstration's sake.
+
+  if(!user){
     return <h1>Loading...</h1>;
   };
 
   return(  
-      <aside>
+      <aside> 
         <h1>{user.name}</h1>
       </aside>
-  );
+  ); //aside element is used because "HTML best practices dictate that there should be only one main element per page view."
 };
 
 export default UserProfile;
